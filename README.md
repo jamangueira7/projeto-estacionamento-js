@@ -17,9 +17,9 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 ## 💻 Projeto
 
-Projeto faz a contagem do ano corrente ate o proximo ano novo.
+Projeto em JS para cadastrar carros em um estacionamento.
 
-Projeto inspirado na video aula do canal [Florin Pop](https://www.youtube.com/watch?v=dtKciwk_si4).
+Projeto inspirado na video aula do canal [Codigo de estagirio](https://www.youtube.com/watch?v=5YSsfuCgB5A&list=PLDLKWOQSNkl2eW1IMqTFfyfdhYAUvyMsm).
 
 <p align="center">
   <img alt="animation" src=".github/imagem1.PNG" width="100%">
