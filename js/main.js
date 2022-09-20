@@ -1,6 +1,9 @@
 const result = document.getElementById('result');
+const divError = document.getElementById('error');
 
 let cars = [];
+let car;
+
 
 const getCars = () => JSON.parse(localStorage.getItem('car_yard'));
 
@@ -8,18 +11,19 @@ const setCars = () => {
     localStorage.setItem('car_yard', JSON.stringify(cars))
 };
 
-const carModel = (carModel, licensePlate) => {
+const carObj = ({model, plate }) => {
     const time = new Date();
 
     return {
-        model: carModel,
-        plate: licensePlate,
+        model: model,
+        plate: plate,
         hour: time.getHours(),
         minutes: time.getMinutes()
     };
 };
 
 const reloadScreen = () => {
+    divError.classList.add("hidden");
     result.innerHTML = '';
     showCarYard();
 }
@@ -30,7 +34,12 @@ const registerCar = (event) => {
     const carModel = document.getElementById('car-model').value;
     const licensePlate = document.getElementById('license-plate').value;
 
-    const car = carModel(carModel, licensePlate);
+    if (!carModel || !licensePlate) {
+        divError.classList.remove("hidden");
+        return;
+    }
+
+    const car = carObj({ model: carModel, plate: licensePlate });
 
     if(getCars() !== null) {
         cars = getCars();
@@ -44,8 +53,7 @@ const registerCar = (event) => {
 const removeCar = (plate) => {
     cars = getCars().filter(car => car.plate !== plate);
     setCars();
-    result.innerHTML = '';
-    showCarYard();
+    reloadScreen();
 };
 
 const showCarYard = () => {
