@@ -1,3 +1,4 @@
+
 const registerCar = (event) => {
     event.preventDefault();
 
@@ -22,6 +23,22 @@ const registerCar = (event) => {
     cars.push(car);
     localStorage.setItem('car_yard', JSON.stringify(cars));
 
+    let result = document.getElementById('result');
+    result.innerHTML = '';
+    showCarYard();
+
+};
+
+const removeCar = (plate) => {
+    let cars = JSON.parse(localStorage.getItem('car_yard'));
+
+    cars = cars.filter(car => car.plate !== plate);
+
+    localStorage.setItem('car_yard', JSON.stringify(cars));
+
+    let result = document.getElementById('result');
+    result.innerHTML = '';
+    showCarYard();
 };
 
 const showCarYard = () => {
@@ -43,6 +60,16 @@ const showCarYard = () => {
         const tdStart = document.createElement('td');
         tdStart.innerHTML = car.hour + ":" + car.minutes
         tr.appendChild(tdStart);
+
+        const tdFinish = document.createElement('td');
+        const btnFinish = document.createElement('button');
+        btnFinish.innerHTML = "Excluir";
+        btnFinish.className = "btn btn-danger";
+        btnFinish.setAttribute("onclick", `removeCar('${car.plate}')`);
+        tdFinish.appendChild(btnFinish);
+
+        tr.appendChild(tdFinish);
+
         result.appendChild(tr);
     });
 };
