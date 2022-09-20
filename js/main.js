@@ -1,50 +1,55 @@
+const result = document.getElementById('result');
 
-const registerCar = (event) => {
-    event.preventDefault();
+let cars = [];
 
-    var carModel = document.getElementById('car-model').value;
-    var licensePlate = document.getElementById('license-plate').value;
-    var time = new Date();
+const getCars = () => JSON.parse(localStorage.getItem('car_yard'));
 
-    let car = {
+const setCars = () => {
+    localStorage.setItem('car_yard', JSON.stringify(cars))
+};
+
+const carModel = (carModel, licensePlate) => {
+    const time = new Date();
+
+    return {
         model: carModel,
         plate: licensePlate,
         hour: time.getHours(),
         minutes: time.getMinutes()
     };
+};
 
-    let cars = [];
+const reloadScreen = () => {
+    result.innerHTML = '';
+    showCarYard();
+}
 
-    if(localStorage.getItem('car_yard') !== null) {
-        cars = JSON.parse(localStorage.getItem('car_yard'));
+const registerCar = (event) => {
+    event.preventDefault();
 
+    const carModel = document.getElementById('car-model').value;
+    const licensePlate = document.getElementById('license-plate').value;
+
+    const car = carModel(carModel, licensePlate);
+
+    if(getCars() !== null) {
+        cars = getCars();
     }
 
     cars.push(car);
-    localStorage.setItem('car_yard', JSON.stringify(cars));
-
-    let result = document.getElementById('result');
-    result.innerHTML = '';
-    showCarYard();
-
+    setCars();
+    reloadScreen();
 };
 
 const removeCar = (plate) => {
-    let cars = JSON.parse(localStorage.getItem('car_yard'));
-
-    cars = cars.filter(car => car.plate !== plate);
-
-    localStorage.setItem('car_yard', JSON.stringify(cars));
-
-    let result = document.getElementById('result');
+    cars = getCars().filter(car => car.plate !== plate);
+    setCars();
     result.innerHTML = '';
     showCarYard();
 };
 
 const showCarYard = () => {
-    let cars = JSON.parse(localStorage.getItem('car_yard'));
-
-    let result = document.getElementById('result');
+    const cars = getCars();
 
     cars.forEach(car => {
         const tr = document.createElement('tr');
