@@ -2,8 +2,6 @@ const result = document.getElementById('result');
 const divError = document.getElementById('error');
 
 let cars = [];
-let car;
-
 
 const getCars = () => JSON.parse(localStorage.getItem('car_yard'));
 
@@ -18,13 +16,14 @@ const carObj = ({model, plate }) => {
         model: model,
         plate: plate,
         hour: time.getHours(),
-        minutes: time.getMinutes()
+        minutes: minutesToDigits(time.getMinutes())
     };
 };
 
 const reloadScreen = () => {
     divError.classList.add("hidden");
     result.innerHTML = '';
+    document.getElementById('form-car').reset();
     showCarYard();
 }
 
@@ -48,12 +47,17 @@ const registerCar = (event) => {
     cars.push(car);
     setCars();
     reloadScreen();
+
 };
 
 const removeCar = (plate) => {
     cars = getCars().filter(car => car.plate !== plate);
     setCars();
     reloadScreen();
+};
+
+const minutesToDigits = (val) => {
+    return val < 10 ? `0${val}`: val;
 };
 
 const showCarYard = () => {
@@ -71,7 +75,7 @@ const showCarYard = () => {
         tr.appendChild(tdPlate);
 
         const tdStart = document.createElement('td');
-        tdStart.innerHTML = car.hour + ":" + car.minutes
+        tdStart.innerHTML = `${car.hour} : ${car.minutes}`
         tr.appendChild(tdStart);
 
         const tdFinish = document.createElement('td');
